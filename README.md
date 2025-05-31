@@ -80,7 +80,7 @@ Or install via Terminal
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/sukeesh/Jarvis.git
+   git clone https://github.com/conerst0ne/Jarvis.git
    ```
 
 2. **Run the installer**

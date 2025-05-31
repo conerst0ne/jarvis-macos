@@ -1,0 +1,35 @@
+language: python
+jobs:
+  cache: pip
+  include:
+    - name: "Python 3.7 on Linux"
+      os: linux
+      dist: xenial
+      python: 3.7
+      env: TOXENV=py37
+    - name: "Python 3.7 on MacOS"
+      os: osx
+      language: generic
+      env: TOXENV=py37
+    - name: "Python 3.7 on Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.7.4
+        - python -m pip install --upgrade pip
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+install:
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+        sudo -H pip3 install --upgrade -r installer/requirements.txt;
+      else
+        pip install --upgrade -r installer/requirements.txt;
+      fi
+script:
+  - cd $TRAVIS_BUILD_DIR/
+  - flake8 --select E,W --max-line-length=140 --ignore E722,W503,W504,E128 jarviscli/
+  - cd jarviscli/
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      python3 -m unittest discover;
+    else
+      python -m unittest discover;
+    fi
